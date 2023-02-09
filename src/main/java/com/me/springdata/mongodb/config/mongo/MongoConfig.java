@@ -1,4 +1,4 @@
-package com.me.springdata.mongodb.config;
+package com.me.springdata.mongodb.config.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;

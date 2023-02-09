@@ -2,6 +2,7 @@ package com.me.springdata.mongodb.document;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @Document
 public class User {
     @Id
+    @Indexed(unique = true)
     private String id;
     private Long userId;
     private String firstName;
