@@ -1,5 +1,6 @@
 package com.me.springdata.mongodb.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -18,7 +19,6 @@ import java.time.LocalDateTime;
 @Document
 public class User {
     @Id
-    @Indexed(unique = true)
     private String id;
     private Long userId;
     private String firstName;
@@ -26,6 +26,7 @@ public class User {
     private int age;
     private String[] locList;
     @Field("ct")
+    @JsonIgnore
     private LocalDateTime createTime;
 
     @Field("detail_id")

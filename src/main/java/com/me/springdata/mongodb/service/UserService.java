@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class UserService {
@@ -17,7 +19,8 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     public UserListResponse findUserList() {
-        return UserListResponse.builder().users(userRepository.findAll()).build();
+        List<User> all = userRepository.findAll();
+        return UserListResponse.builder().users(all).build();
     }
 
     public UserResponse findUserByUserId(Long userId) {

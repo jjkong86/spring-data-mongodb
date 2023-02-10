@@ -1,4 +1,4 @@
-package com.me.springdata.mongodb.handler;
+package com.me.springdata.mongodb.config.handler;
 
 import com.me.springdata.mongodb.exception.ValidCustomException;
 import com.me.springdata.mongodb.utils.JsonUtils;

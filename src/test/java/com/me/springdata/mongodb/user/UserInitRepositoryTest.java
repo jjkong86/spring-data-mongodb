@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
-@SpringBootTest(properties = {"spring.config.location=classpath:application-test.properties"})
+@SpringBootTest(properties = {"spring.config.location=classpath:application-local.properties"})
 //@Transactional
 public class UserInitRepositoryTest {
     @Autowired
