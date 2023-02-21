@@ -39,6 +39,21 @@ public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
         log.info(user.getUserDetail());
     }
 
+    @DisplayName("user, userDetail reference lazy test2")
+    @Test
+    public void user_reference_lazy_test2() throws InterruptedException {
+        //given
+        long userId = 1L;
+        //when
+        User user = userRepository.findByUserId(userId);
+        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        user.setUserDetail(userDetail);
+        //done
+        Thread.sleep(1000);
+        UserDetail userDetail1 = user.getUserDetail();
+        log.info(userDetail1);
+    }
+
     @DisplayName("user, userDetail reference test")
     @Test
     public void user_reference_test() {
