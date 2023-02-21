@@ -27,7 +27,7 @@ public class UserService {
         return UserResponse.builder().user(userRepository.findByUserId(userId)).build();
     }
 
-    public ApiCommonResponse saveUser(UserDto userDto) {
+    public ApiCommonResponse saveByDto(UserDto userDto) {
         User user = modelMapper.map(userDto, User.class);
         userRepository.save(user);
         return new ApiCommonResponse();

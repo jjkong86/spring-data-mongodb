@@ -28,7 +28,6 @@ public class CreateMongoDBIndex {
         if (!indexId.equals("")) {
             mongoTemplate.indexOps(User.class).ensureIndex(new Index().on("userId", Sort.Direction.DESC).unique());
         }
-
         log.info("end ==> create mongodb index.");
     }
 

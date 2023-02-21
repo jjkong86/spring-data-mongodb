@@ -25,6 +25,6 @@ public class UserController {
 
     @PostMapping(value = "/users")
     public ApiCommonResponse saveUser(@RequestBody UserDto user) {
-        return userService.saveUser(user);
+        return userService.saveByDto(user);
     }
 }

@@ -17,9 +17,10 @@ import static java.util.stream.Collectors.joining;
 @Log4j2
 public class GlobalAspectLogHandler {
     @Around("within(com.me.springdata.mongodb.*.*Controller)")
-    public Object logBefore(ProceedingJoinPoint point) {
+    public Object aroundLogging(ProceedingJoinPoint point) {
 
         Object resultVal;
+        long start = System.currentTimeMillis();
         try {
             resultVal = point.proceed();
         } catch (Throwable throwable) {
@@ -27,7 +28,6 @@ public class GlobalAspectLogHandler {
             throw new ValidCustomException(throwable.getMessage());
         }
 
-        long start = System.currentTimeMillis();
         long processTime = System.currentTimeMillis() - start;
 
         Object[] params = point.getArgs();

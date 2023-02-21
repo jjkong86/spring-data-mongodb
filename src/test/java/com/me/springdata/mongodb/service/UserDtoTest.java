@@ -29,5 +29,4 @@ public class UserDtoTest extends UserInitRepositoryTest {
         //done
         Assertions.assertThat(userByRepository.getUserId()).isEqualTo(userDto.getUserId());
     }
-
 }
