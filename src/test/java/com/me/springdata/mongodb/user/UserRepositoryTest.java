@@ -112,4 +112,26 @@ public class UserRepositoryTest extends UserInitRepositoryTest {
         resultByRepository.thenAccept(users -> users.forEach(user -> log.info(user.getUserId())));
         resultByTemplate.thenAccept(users -> users.forEach(user -> log.info(user.getUserId())));
     }
+
+    @Test
+    public void user_jap_element_match_test() {
+        //given
+        String loc = "busan";
+        //when
+        List<User> users = userRepository.findByElementMatch(loc);
+        //done
+
+        Assertions.assertThat(users.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void user_jpa_update_test() {
+        //given
+        Long userId = 1L;
+        //when
+        long result = userRepository.updateByUserIdSetAge(1L, 999);
+
+        //done
+        Assertions.assertThat(result).isPositive();
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Update;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,4 +40,11 @@ public interface UserRepository extends MongoRepository<User, Long>, UserCustomR
 
     @Query("{'address.addressId': ?0}")
     Optional<List<User>> findByAddressId(Long addressId);
+
+    @Query("{'loc_list': {$elemMatch : {$eq : ?0}}}")
+    List<User> findByElementMatch(String loc);
+
+    @Query("{'userId': ?0}")
+    @Update("{ '$set' : { 'age' : ?1 } }")
+    long updateByUserIdSetAge(Long userId, int age);
 }
