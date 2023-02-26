@@ -31,10 +31,10 @@ public class UserRollbackTest extends UserInitRepositoryTest {
         Long userId2 = 2L;
 
         //when
-        userTransactionService.userUpdate(userId);
+        userTransactionService.singleTransactionTest(userId, false);
         User user = userTemplateRepository.findByUserId(userId);
 
-        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTransactionService.userUpdate(userId2));
+        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTransactionService.singleTransactionTest(userId2, true));
         User user2 = userTemplateRepository.findByUserId(userId2);
 
         //done
@@ -49,8 +49,8 @@ public class UserRollbackTest extends UserInitRepositoryTest {
         Long userId2 = 2L;
 
         //when
-        userTransactionService.multiDocumentTransactionTest(userId);
-        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTransactionService.multiDocumentTransactionTest(userId2));
+        userTransactionService.multiDocumentTransactionTest(userId, false);
+        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTransactionService.multiDocumentTransactionTest(userId2,true));
         User user2 = userTemplateRepository.findByUserId(userId2);
         UserDetail userDetail = userDetailRepository.findByUserId(userId2);
 

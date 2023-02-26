@@ -1,7 +1,6 @@
 package com.me.springdata.mongodb.config.mongo;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
+import com.mongodb.*;
 import com.mongodb.client.ListDatabasesIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -18,6 +17,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import static com.mongodb.WriteConcern.*;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.me.springdata.mongodb.repository")
@@ -61,7 +62,13 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Bean
     MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
-        return new MongoTransactionManager(dbFactory);
+        TransactionOptions txnOptions = TransactionOptions.builder()
+                .readPreference(ReadPreference.primary())
+                .readConcern(ReadConcern.LOCAL)
+                .writeConcern(MAJORITY)
+                .build();
+
+        return new MongoTransactionManager(dbFactory, txnOptions);
     }
 }
 
