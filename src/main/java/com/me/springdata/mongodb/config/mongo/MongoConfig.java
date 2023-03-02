@@ -1,6 +1,13 @@
 package com.me.springdata.mongodb.config.mongo;
 
-import com.mongodb.*;
+import static com.mongodb.WriteConcern.MAJORITY;
+
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ReadConcern;
+import com.mongodb.ReadPreference;
+import com.mongodb.TransactionOptions;
+import com.mongodb.WriteConcern;
 import com.mongodb.client.ListDatabasesIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -14,11 +21,13 @@ import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.*;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import static com.mongodb.WriteConcern.*;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.me.springdata.mongodb.repository")
@@ -39,21 +48,26 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        MongoClientSettings mongoClientSettings = MongoClientSettings.builder().applyConnectionString(new ConnectionString(uri)).build();
+        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(uri))
+                .writeConcern(
+                        WriteConcern.ACKNOWLEDGED) // Optimistic Locking requires to set the WriteConcern to ACKNOWLEDGED. Otherwise OptimisticLockingFailureException can be silently swallowed.
+                .build();
         MongoClient client = MongoClients.create(mongoClientSettings);
         ListDatabasesIterable<Document> databases = client.listDatabases();
         return client;
     }
 
     @Bean
-    public MongoTemplate mongoTemplate(MongoDatabaseFactory databaseFactory, MappingMongoConverter converter) {
+    public MongoTemplate mongoTemplate(MongoDatabaseFactory databaseFactory,
+            MappingMongoConverter converter) {
         return new MongoTemplate(databaseFactory, converter);
     }
 
     @Bean
     @Override
     public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory databaseFactory,
-                                                       MongoCustomConversions customConversions, MongoMappingContext mappingContext) {
+            MongoCustomConversions customConversions, MongoMappingContext mappingContext) {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(databaseFactory);
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mappingContext);
         converter.setTypeMapper(new DefaultMongoTypeMapper(null));

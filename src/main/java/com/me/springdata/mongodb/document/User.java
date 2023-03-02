@@ -1,9 +1,9 @@
 package com.me.springdata.mongodb.document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -37,4 +37,7 @@ public class User {
     private UserDetail userDetail;
 
     private Address address;
+
+    @Version
+    Long version;
 }

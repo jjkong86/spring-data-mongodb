@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Log4j2
 public class UserTransactionService {
+
     private final UserTemplateRepository templateRepository;
     private final UserDetailRepository userDetailRepository;
     private final UserRepository userRepository;
@@ -63,6 +64,7 @@ public class UserTransactionService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         log.info("==> start user locList null update");
         templateRepository.updateLocByUserId(userId, null);
         log.info("==> end user locList null update");
@@ -70,13 +72,14 @@ public class UserTransactionService {
 
     @Transactional
     public void writeConflictTest(Long userId) {
+        log.info("==> start user locList update");
         userRepository.findByUserId(userId);
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        log.info("==> start user locList update");
+
         templateRepository.updateLocByUserId(userId, new String[]{"seoul1", "busan1"});
         log.info("==> end user locList update");
     }

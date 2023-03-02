@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @Log4j2
-@SpringBootTest(properties = {"spring.config.location=classpath:application-local-cloud.properties"})
+@SpringBootTest(properties = {
+        "spring.config.location=classpath:application-local-cloud.properties"})
 public class UserTransactionTest extends UserInitRepositoryTest {
+
     @Autowired
     UserTransactionService userTransactionService;
     @Autowired
@@ -36,7 +38,8 @@ public class UserTransactionTest extends UserInitRepositoryTest {
         log.info("userId : 1 transaction.");
         userTotalTransactionService.requiredNewTest(userId1, false);
         log.info("userId : 2 transaction.");
-        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTotalTransactionService.requiredNewTest(userId2, true)).printStackTrace();
+        Assertions.assertThrowsExactly(RuntimeException.class,
+                () -> userTotalTransactionService.requiredNewTest(userId2, true)).printStackTrace();
 
         //done
         User user1 = userTemplateRepository.findByUserId(userId1);
@@ -60,7 +63,9 @@ public class UserTransactionTest extends UserInitRepositoryTest {
 
         //when
         log.info("userId : 1 transaction.");
-        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTotalTransactionService.requiredNewRollbackTest(userId1, true)).printStackTrace();
+        Assertions.assertThrowsExactly(RuntimeException.class,
+                        () -> userTotalTransactionService.requiredNewRollbackTest(userId1, true))
+                .printStackTrace();
 
         //done
         User user = userTemplateRepository.findByUserId(userId1);
@@ -90,7 +95,8 @@ public class UserTransactionTest extends UserInitRepositoryTest {
         Long userId = 1L;
 
         //when
-        Assertions.assertThrowsExactly(RuntimeException.class, () -> userTotalTransactionService.WriteConflictTest(userId)).printStackTrace();
+        Assertions.assertThrowsExactly(RuntimeException.class,
+                () -> userTotalTransactionService.WriteConflictTest(userId)).printStackTrace();
 
         //done
         User user = userTemplateRepository.findByUserId(userId);
