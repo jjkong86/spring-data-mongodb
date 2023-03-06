@@ -118,7 +118,7 @@ public class UserRepositoryTest extends UserInitRepositoryTest {
         //given
         String loc = "busan";
         //when
-        List<User> users = userRepository.findByElementMatch(loc);
+        List<User> users = userRepository.findByLocElemMatch(loc);
         //done
 
         Assertions.assertThat(users.size()).isGreaterThan(0);

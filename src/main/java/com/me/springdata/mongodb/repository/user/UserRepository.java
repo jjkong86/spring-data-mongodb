@@ -42,7 +42,7 @@ public interface UserRepository extends MongoRepository<User, Long>, UserCustomR
     Optional<List<User>> findByAddressId(Long addressId);
 
     @Query("{'loc_list': {$elemMatch : {$eq : ?0}}}")
-    List<User> findByElementMatch(String loc);
+    List<User> findByLocElemMatch(String loc);
 
     @Query("{'userId': ?0}")
     @Update("{ '$set' : { 'age' : ?1 } }")

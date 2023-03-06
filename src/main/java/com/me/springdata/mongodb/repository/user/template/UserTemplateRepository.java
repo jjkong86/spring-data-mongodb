@@ -75,4 +75,10 @@ public class UserTemplateRepository {
         return mongoTemplate.remove(new Query().addCriteria(Criteria.where("userId").is(userId)),
                 User.class).getDeletedCount();
     }
+
+    public long updateAgeByUserId(Long userId, int age) {
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userId));
+        Update update = new Update().set("age", age);
+        return mongoTemplate.upsert(query, update, User.class).getModifiedCount();
+    }
 }
