@@ -5,6 +5,10 @@ import com.me.springdata.mongodb.document.UserDetail;
 import com.me.springdata.mongodb.repository.user.UserRepository;
 import com.me.springdata.mongodb.repository.user.template.UserTemplateRepository;
 import com.me.springdata.mongodb.repository.userdetail.UserDetailRepository;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +23,7 @@ import java.util.TimeZone;
 @SpringBootTest(properties = {"spring.config.location=classpath:application-local.properties"})
 //@Transactional
 public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
+
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -39,9 +44,9 @@ public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
         log.info(user.getUserDetail());
     }
 
-    @DisplayName("user, userDetail reference lazy test2")
+    @DisplayName("user, userDetail reference field injection")
     @Test
-    public void user_reference_lazy_test2() throws InterruptedException {
+    public void user_reference_field_injection_test() throws InterruptedException {
         //given
         long userId = 1L;
         //when
@@ -54,13 +59,28 @@ public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
         log.info(userDetail1);
     }
 
+    @DisplayName("list user, userDetail reference field injection")
+    @Test
+    public void list_user_reference_field_injection_test() {
+        //when
+        List<User> findAll = userRepository.findAll();
+        List<Long> userIdList = findAll.stream().map(User::getUserId).toList();
+        Iterable<UserDetail> userDetailList = userDetailRepository.findAllByUserIdIn(userIdList);
+        Map<Long, UserDetail> detailMap = StreamSupport.stream(userDetailList.spliterator(), false)
+                .collect(Collectors.toMap(UserDetail::getUserId, Function.identity()));
+        findAll.forEach(user -> user.setUserDetail(detailMap.get(user.getUserId())));
+
+        //done
+        findAll.forEach(user -> log.info(user.getUserDetail()));
+    }
+
     @DisplayName("user, userDetail reference test")
     @Test
     public void user_reference_test() {
         //given
         long userId = 1L;
         //when
-        User userByUserId = userRepository.findByUserId(userId);
+        userRepository.findByUserId(userId);
 
         //done
 //        log.info(userByUserId.getUserDetail());
