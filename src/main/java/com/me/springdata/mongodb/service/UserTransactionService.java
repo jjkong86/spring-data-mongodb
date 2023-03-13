@@ -26,7 +26,7 @@ public class UserTransactionService {
 
     @Transactional
     public void singleTransactionTest(Long userId, boolean rollback) {
-        long l = templateRepository.updateLocByUserId(userId, null);
+        templateRepository.updateLocByUserId(userId, null);
         User user = templateRepository.findByUserId(userId);
         log.info("locList is null : {}", user.getLocList() == null);
         if (rollback) {
@@ -38,7 +38,7 @@ public class UserTransactionService {
     public void multiDocumentTransactionTest(Long userId, boolean rollback) {
         User user = templateRepository.findByUserId(userId);
         user.setLocList(null);
-        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        UserDetail userDetail = userDetailRepository.findByDetailId(userId);
         userDetail.setLoc(null);
         userRepository.save(user);
         userDetailRepository.save(userDetail);

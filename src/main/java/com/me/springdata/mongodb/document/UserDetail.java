@@ -13,11 +13,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 @Builder
-@Document
+@Document("UserDetail")
 public class UserDetail {
     @Id
     private String id;
-    private Long userId;
+    @Field("detail_id")
+    private Long detailId;
     private String loc;
     private String hp;
     @Field("ct")

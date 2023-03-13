@@ -26,7 +26,7 @@ public class OptimisticLockingTest extends UserInitRepositoryTest {
         //given
         long userId = 5L;
         User user = User.builder().userId(userId).firstName("Joe5").age(12321).locList(new String[]{"seoul5", "busan5"})
-                .userDetail(UserDetail.builder().userId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
+                .userDetail(UserDetail.builder().detailId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
                 .address(Address.builder().addressId(1L).loc("busan").build()).build();
         userRepository.save(user);
         User findUser = userRepository.findByUserId(userId);
@@ -44,7 +44,7 @@ public class OptimisticLockingTest extends UserInitRepositoryTest {
         //given
         long userId = 5L;
         User user = User.builder().userId(userId).firstName("Joe5").age(12321).locList(new String[]{"seoul5", "busan5"})
-                .userDetail(UserDetail.builder().userId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
+                .userDetail(UserDetail.builder().detailId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
                 .address(Address.builder().addressId(1L).loc("busan").build()).build();
         userTemplateRepository.save(user);
         User findUser = userTemplateRepository.findByUserId(userId);
@@ -62,10 +62,10 @@ public class OptimisticLockingTest extends UserInitRepositoryTest {
         //given
         long userId = 5L;
         User user = User.builder().userId(userId).firstName("Joe5").age(12321).locList(new String[]{"seoul5", "busan5"})
-                .userDetail(UserDetail.builder().userId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
+                .userDetail(UserDetail.builder().detailId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now())
                 .address(Address.builder().addressId(1L).loc("busan").build()).build();
         userTemplateRepository.save(user);
-        User findUser = userTemplateRepository.findByUserId(userId);
+        userTemplateRepository.findByUserId(userId);
 
         //when
         user.setAge(123456);

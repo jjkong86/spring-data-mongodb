@@ -16,11 +16,11 @@ public class UserDetailTransactionService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void newTransactionTest(Long userId, boolean rollback) {
-        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        UserDetail userDetail = userDetailRepository.findByDetailId(userId);
         userDetail.setLoc(null);
         userDetailRepository.save(userDetail);
         if (rollback) {
-            throw new RuntimeException("UserDetail loc update rollback. userId : " + userId);
+            throw new RuntimeException("UserDetail loc update rollback. detailId : " + userId);
         }
     }
 }

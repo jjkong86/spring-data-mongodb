@@ -11,27 +11,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public interface UserRepository extends MongoRepository<User, Long>, UserCustomRepository {
-    String queryDefault = "{}";
-    String fieldsFindAllOrderByLastNameAsc = "{userId : 1, age: 1}";
-//    ========================
+public interface UserRepository extends MongoRepository<User, Long> {
 
-    long deleteByUserId(Long UserId);
+    User findByUserId(Long userId);
+    @Query(fields = "{'userId' : 1, 'firstName' : 1}")
+    CompletableFuture<List<User>> findByFirstNameOrderByFirstNameAsc(String firstName);
+    @Query("{'loc_list': {'$elemMatch' : {'$eq' : ?0}}}")
+    List<User> findByLocElemMatch(String loc);
+    @Query("{'userId': ?0}")
+    @Update("{ '$set' : { 'age' : ?1 } }")
+    long updateByUserIdSetAge(Long userId, int age);
+    long deleteByUserId(Long userId);
+
+
+    List<User> findTop3ByUserIdInOrderByFirstNameDescAgeAsc(List<Long> userIdList);
+
+    String queryDefault = "{}";
+
+    String fieldsFindAllOrderByLastNameAsc = "{userId : 1, age: 1}";
 
     @Query(value = queryDefault, fields = fieldsFindAllOrderByLastNameAsc)
     CompletableFuture<List<User>> findAllOrderByLastNameAsc();
 
-    @Query("{ 'firstName' : ?0 }")
-    List<User> findUsers(String FistName);
-
-    @Query(fields = "{userId : 1, firstName : 1}")
-    CompletableFuture<List<User>> findByFirstNameOrderByFirstNameAsc(String firstName);
-
     Optional<Page<User>> findLimitByFirstName(String firstName, Pageable pageable);
 
-    User findByUserId(Long userId);
-
-    List<User> findTop3ByUserIdInOrderByFirstNameDescAgeAsc(List<Long> userIdList);
     List<User> findTop3ByUserIdInOrderByFirstNameDescAgeAsc(List<Long> userIdList, String str);
 
     default List<User> findByUserIdList(List<Long> userIdList) {
@@ -40,11 +43,4 @@ public interface UserRepository extends MongoRepository<User, Long>, UserCustomR
 
     @Query("{'address.addressId': ?0}")
     Optional<List<User>> findByAddressId(Long addressId);
-
-    @Query("{'loc_list': {$elemMatch : {$eq : ?0}}}")
-    List<User> findByLocElemMatch(String loc);
-
-    @Query("{'userId': ?0}")
-    @Update("{ '$set' : { 'age' : ?1 } }")
-    long updateByUserIdSetAge(Long userId, int age);
 }

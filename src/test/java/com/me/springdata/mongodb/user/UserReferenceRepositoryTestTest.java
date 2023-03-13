@@ -8,7 +8,6 @@ import com.me.springdata.mongodb.repository.userdetail.UserDetailRepository;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +50,7 @@ public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
         long userId = 1L;
         //when
         User user = userRepository.findByUserId(userId);
-        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        UserDetail userDetail = userDetailRepository.findByDetailId(userId);
         user.setUserDetail(userDetail);
         //done
         Thread.sleep(1000);
@@ -63,15 +62,14 @@ public class UserReferenceRepositoryTestTest extends UserInitRepositoryTest {
     @Test
     public void list_user_reference_field_injection_test() {
         //when
-        List<User> findAll = userRepository.findAll();
-        List<Long> userIdList = findAll.stream().map(User::getUserId).toList();
-        Iterable<UserDetail> userDetailList = userDetailRepository.findAllByUserIdIn(userIdList);
-        Map<Long, UserDetail> detailMap = StreamSupport.stream(userDetailList.spliterator(), false)
-                .collect(Collectors.toMap(UserDetail::getUserId, Function.identity()));
-        findAll.forEach(user -> user.setUserDetail(detailMap.get(user.getUserId())));
+        List<User> findAllUser = userRepository.findAll();
+        List<Long> userIdList = findAllUser.stream().map(User::getUserId).toList();
+        List<UserDetail> findUserDetailList = userDetailRepository.findByDetailIdIn(userIdList);
+        Map<Long, UserDetail> userDetailMap = findUserDetailList.stream().collect(Collectors.toMap(UserDetail::getDetailId, Function.identity()));
+        findAllUser.forEach(user -> user.setUserDetail(userDetailMap.get(user.getUserId())));
 
         //done
-        findAll.forEach(user -> log.info(user.getUserDetail()));
+        findAllUser.forEach(user -> log.info(user.getUserDetail()));
     }
 
     @DisplayName("user, userDetail reference test")

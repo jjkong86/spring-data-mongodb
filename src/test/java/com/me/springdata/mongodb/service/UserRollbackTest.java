@@ -52,7 +52,7 @@ public class UserRollbackTest extends UserInitRepositoryTest {
         userTransactionService.multiDocumentTransactionTest(userId, false);
         Assertions.assertThrowsExactly(RuntimeException.class, () -> userTransactionService.multiDocumentTransactionTest(userId2,true));
         User user2 = userTemplateRepository.findByUserId(userId2);
-        UserDetail userDetail = userDetailRepository.findByUserId(userId2);
+        UserDetail userDetail = userDetailRepository.findByDetailId(userId2);
 
         //done
         Assertions.assertNotNull(user2.getLocList());

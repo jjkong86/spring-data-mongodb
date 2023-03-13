@@ -26,7 +26,7 @@ public class MongoSavePerformanceTest {
 
         //when
         for (long i = 0; i < 1000; i++) {
-            userRepository.insert(User.builder().userId(i).firstName("Joe").age(12321).locList(new String[]{"seoul", "busan"}).userDetail(UserDetail.builder().userId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now()).address(Address.builder().addressId(1L).loc("busan").build()).build());
+            userRepository.insert(User.builder().userId(i).firstName("Joe").age(12321).locList(new String[]{"seoul", "busan"}).userDetail(UserDetail.builder().detailId(1L).hp("0104923").loc("seoul").build()).createTime(LocalDateTime.now()).address(Address.builder().addressId(1L).loc("busan").build()).build());
         }
         List<User> users = userRepository.findAll();
 

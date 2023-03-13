@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserDetailRepository extends CrudRepository<UserDetail, Long> {
 
-    UserDetail findByUserId(Long userId);
-    List<UserDetail> findAllByUserIdIn(List<Long> userIdList);
+    UserDetail findByDetailId(Long userId);
+    List<UserDetail> findByDetailIdIn(List<Long> userIdList);
 }

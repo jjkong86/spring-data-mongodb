@@ -43,10 +43,10 @@ public class UserTransactionTest extends UserInitRepositoryTest {
 
         //done
         User user1 = userTemplateRepository.findByUserId(userId1);
-        UserDetail userDetail1 = userDetailRepository.findByUserId(userId1);
+        UserDetail userDetail1 = userDetailRepository.findByDetailId(userId1);
 
         User user2 = userTemplateRepository.findByUserId(userId2);
-        UserDetail userDetail2 = userDetailRepository.findByUserId(userId2);
+        UserDetail userDetail2 = userDetailRepository.findByDetailId(userId2);
 
         Assertions.assertNull(user1.getLocList());
         Assertions.assertNull(userDetail1.getLoc());
@@ -69,7 +69,7 @@ public class UserTransactionTest extends UserInitRepositoryTest {
 
         //done
         User user = userTemplateRepository.findByUserId(userId1);
-        UserDetail userDetail = userDetailRepository.findByUserId(userId1);
+        UserDetail userDetail = userDetailRepository.findByDetailId(userId1);
         Assertions.assertNotNull(user.getLocList());
         Assertions.assertNotNull(userDetail.getLoc());
     }

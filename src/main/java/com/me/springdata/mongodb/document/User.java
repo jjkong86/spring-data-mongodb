@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Builder
-@Document
+@Document(collection = "User")
 public class User {
     @Id
     private String id;
@@ -33,7 +33,7 @@ public class User {
     private LocalDateTime createTime;
 
     @Field("detail_id")
-    @DocumentReference(lazy = true, lookup = "{ 'userId' : ?#{#target} }")
+    @DocumentReference(lazy = true, lookup = "{ 'detailId' : ?#{#target} }")
     private UserDetail userDetail;
 
     private Address address;
