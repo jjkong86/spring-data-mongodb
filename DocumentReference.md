@@ -1,11 +1,3 @@
-## Spring Data MongoDB
-
-### Config
-
-### 설정(Domain Class, Repository)
-
-## Optimistic Locking
-
 ## DocumentReference란
 
 ---
